@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { usePageView } from './hooks/usePageView'
+import { useSiteSettings } from './hooks/useSiteSettings'
+
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -22,6 +24,9 @@ import Analytics from './ams/admin/Analytics'
 import AuditLog from './ams/admin/AuditLog'
 import WebsiteManager from './ams/admin/WebsiteManager'
 import AdminProfile from './ams/admin/AdminProfile'
+import SuperAdmin from './ams/admin/SuperAdmin'
+import AdmissionInquiries from './ams/admin/AdmissionInquiries'
+import ContactMessages from './ams/admin/ContactMessages'
 import TeacherLayout from './ams/teacher/TeacherLayout'
 import MarkAttendance from './ams/teacher/MarkAttendance'
 import TeacherHistory from './ams/teacher/AttendanceHistory'
@@ -36,6 +41,24 @@ import StudentProfile from './ams/student/StudentProfile'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
     usePageView()   // 👁 track every page visit
+    const { settings, loading } = useSiteSettings()
+
+    if (loading) {
+        return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div className="spinner" /></div>
+    }
+
+    if (settings.maintenance_mode === 'true') {
+        return (
+            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--gray-50)', textAlign: 'center', padding: 24 }}>
+                <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'var(--gold-pale)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
+                    <span style={{ fontSize: 40 }}>🛠️</span>
+                </div>
+                <h1 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-serif)', color: 'var(--green-deep)', marginBottom: 16, fontWeight: 800 }}>We'll be back soon!</h1>
+                <p style={{ fontSize: '1.125rem', color: 'var(--gray-500)', maxWidth: 500, lineHeight: 1.6 }}>Sorry for the inconvenience but we're performing some maintenance at the moment. We'll be back online shortly!</p>
+            </div>
+        )
+    }
+
     return (
         <>
             <Navbar />
@@ -73,6 +96,9 @@ export default function App() {
                     <Route path="audit" element={<AuditLog />} />
                     <Route path="website" element={<WebsiteManager />} />
                     <Route path="profile" element={<AdminProfile />} />
+                    <Route path="super" element={<SuperAdmin />} />
+                    <Route path="inquiries" element={<AdmissionInquiries />} />
+                    <Route path="messages" element={<ContactMessages />} />
                 </Route>
 
                 {/* ── Teacher Panel ── */}

@@ -6,16 +6,31 @@ import { useSiteSettings } from '../hooks/useSiteSettings'
 export default function Contact() {
     const { settings } = useSiteSettings()
     const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
-    const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+    const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setStatus('sending')
         try {
-            await supabase.from('contact_messages').insert([{ ...form, created_at: new Date().toISOString() }])
-        } catch { /* graceful fail */ }
-        setStatus('sent')
-        setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+            const payload = {
+                name: form.name,
+                email: form.email,
+                phone: form.phone || null,
+                subject: form.subject,
+                message: form.message
+            }
+            const { error } = await supabase.from('contact_messages').insert([payload])
+            if (error) {
+                console.error("Insert Error: ", error)
+                setStatus('error')
+                return
+            }
+            setStatus('sent')
+            setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+        } catch (err) {
+            console.error("Unknown Error: ", err)
+            setStatus('error')
+        }
     }
 
     return (
@@ -120,7 +135,7 @@ export default function Contact() {
                                             <option>Fee Structure</option>
                                             <option>Campus Visit</option>
                                             <option>Academics</option>
-                                                <option>Other</option>
+                                            <option>Other</option>
                                         </select>
                                     </div>
                                     <div className="form-group">
@@ -131,6 +146,11 @@ export default function Contact() {
                                         {status === 'sending' ? 'Sending...' : <><Send size={18} /> Send Message</>}
                                     </button>
                                 </form>
+                            )}
+                            {status === 'error' && (
+                                <div style={{ marginTop: 16, padding: 12, background: '#FEE2E2', color: '#991B1B', borderRadius: 'var(--radius)', fontSize: '0.875rem' }}>
+                                    Failed to send your message. Please check your connection and try again, or contact us via phone.
+                                </div>
                             )}
                         </div>
                     </div>

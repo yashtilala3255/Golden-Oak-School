@@ -32,13 +32,25 @@ export default function Admissions() {
         e.preventDefault()
         setStatus('sending')
         try {
-            const { error } = await supabase.from('admission_inquiries').insert([{ ...form, created_at: new Date().toISOString() }])
-            if (error) throw error
+            const payload = {
+                parent_name: form.parent_name,
+                student_name: form.student_name,
+                grade_applying: form.grade,
+                phone: form.phone,
+                email: form.email || null,
+                message: form.message || null,
+            }
+            const { error } = await supabase.from('admission_inquiries').insert([payload])
+            if (error) {
+                console.error("Insert Error: ", error)
+                setStatus('error')
+                return
+            }
             setStatus('sent')
             setForm({ parent_name: '', student_name: '', grade: '', phone: '', email: '', message: '' })
-        } catch {
-            // If supabase isn't configured, show success anyway for demo
-            setStatus('sent')
+        } catch (err) {
+            console.error("Unknown Error: ", err)
+            setStatus('error')
         }
     }
 
@@ -173,6 +185,11 @@ export default function Admissions() {
                                         {status === 'sending' ? 'Sending...' : <><Send size={18} /> Submit Inquiry</>}
                                     </button>
                                 </form>
+                            )}
+                            {status === 'error' && (
+                                <div style={{ marginTop: 16, padding: 12, background: '#FEE2E2', color: '#991B1B', borderRadius: 'var(--radius)', fontSize: '0.875rem' }}>
+                                    Failed to submit your inquiry. Please check your connection and try again, or contact us via phone.
+                                </div>
                             )}
                         </div>
                     </div>

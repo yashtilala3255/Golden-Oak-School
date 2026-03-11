@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
     Eye, MessageSquare, Image, Bell, Globe, Settings,
-    TrendingUp, Loader, Activity, ArrowRight, CheckCircle, Clock
+    TrendingUp, Loader, Activity, ArrowRight, CheckCircle, Clock, UsersRound
 } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { supabase } from '../../supabaseClient'
@@ -28,7 +28,7 @@ export default function AdminDashboard() {
     const [pvCount, setPvCount] = useState(0)
     const [pvToday, setPvToday] = useState(0)
     const [msgCount, setMsgCount] = useState(0)
-    const [galleryCount, setGalleryCount] = useState(0)
+    const [inquiryCount, setInquiryCount] = useState(0)
     const [annCount, setAnnCount] = useState(0)
     const [annActive, setAnnActive] = useState(0)
 
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
                 supabase.from('page_views').select('created_at').gte('created_at', since30.toISOString()),
                 supabase.from('page_views').select('id', { count: 'exact', head: true }).gte('created_at', `${todayISO}T00:00:00`),
                 supabase.from('contact_messages').select('id', { count: 'exact', head: true }),
-                supabase.from('gallery_items').select('id', { count: 'exact', head: true }),
+                supabase.from('admission_inquiries').select('id', { count: 'exact', head: true }),
                 supabase.from('announcements').select('id,title,category,active,created_at').order('created_at', { ascending: false }).limit(5),
                 supabase.from('contact_messages').select('id,name,subject,created_at').order('created_at', { ascending: false }).limit(5),
             ])
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
             setPvCount((pvAll.data ?? []).length)
             setPvToday(pvTodayRes.count ?? 0)
             setMsgCount(msgRes.count ?? 0)
-            setGalleryCount(galleryRes.count ?? 0)
+            setInquiryCount(galleryRes.count ?? 0)
 
             const anns: Announcement[] = annRes.data ?? []
             setAnnCount(anns.length)
@@ -83,8 +83,8 @@ export default function AdminDashboard() {
 
     const STAT_CARDS = [
         { label: 'Page Views (30d)', value: pvCount, sub: `${pvToday} today`, icon: <Eye size={22} />, color: '#2D6A4F', pale: '#F0FDF4', link: '/ams/admin/analytics' },
-        { label: 'Contact Messages', value: msgCount, sub: 'Total inquiries', icon: <MessageSquare size={22} />, color: '#0EA5E9', pale: '#F0F9FF', link: null },
-        { label: 'Gallery Items', value: galleryCount, sub: 'Published photos', icon: <Image size={22} />, color: '#7C3AED', pale: '#F5F3FF', link: '/ams/admin/website' },
+        { label: 'Admission Inquiries', value: inquiryCount, sub: 'Total applications', icon: <UsersRound size={22} />, color: '#7C3AED', pale: '#F5F3FF', link: '/ams/admin/inquiries' },
+        { label: 'Contact Messages', value: msgCount, sub: 'Total inquiries', icon: <MessageSquare size={22} />, color: '#0EA5E9', pale: '#F0F9FF', link: '/ams/admin/messages' },
         { label: 'Announcements', value: annActive, sub: `${annCount} total, ${annActive} active`, icon: <Bell size={22} />, color: '#C9A84C', pale: '#FFFBEB', link: '/ams/admin/website' },
     ]
 
@@ -219,7 +219,10 @@ export default function AdminDashboard() {
                         <div style={{ background: 'var(--white)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
                             <div style={{ padding: '18px 24px', borderBottom: '1px solid var(--gray-100)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ fontWeight: 700, color: 'var(--green-deep)' }}>Recent Contact Messages</div>
-                                <span style={{ fontSize: '0.75rem', background: '#FEF3C7', color: '#92400E', borderRadius: 99, padding: '2px 10px', fontWeight: 600 }}>{msgCount} total</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                    <span style={{ fontSize: '0.75rem', background: '#FEF3C7', color: '#92400E', borderRadius: 99, padding: '2px 10px', fontWeight: 600 }}>{msgCount} total</span>
+                                    <Link to="/ams/admin/messages" style={{ fontSize: '0.8125rem', color: 'var(--green-mid)', fontWeight: 600, textDecoration: 'none' }}>View All →</Link>
+                                </div>
                             </div>
                             {recentMsg.length === 0 ? (
                                 <div style={{ padding: '28px 24px', textAlign: 'center', color: 'var(--gray-400)', fontSize: '0.875rem' }}>

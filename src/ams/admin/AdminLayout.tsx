@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { GraduationCap, LayoutDashboard, BarChart2, History, LogOut, Menu, X, Bell, Globe, UserCircle2 } from 'lucide-react'
+import { GraduationCap, LayoutDashboard, BarChart2, History, LogOut, Menu, X, Bell, Globe, UserCircle2, ShieldAlert, Mail, UsersRound } from 'lucide-react'
 import { supabase } from '../../supabaseClient'
 
 const NAV_ITEMS = [
     { to: '/ams/admin', label: 'Dashboard', icon: <LayoutDashboard size={18} />, end: true },
-    // { to: '/ams/admin/students', label: 'Students', icon: <Users size={18} /> },
-    // { to: '/ams/admin/teachers', label: 'Teachers', icon: <UserCheck size={18} /> },
-    // { to: '/ams/admin/classes', label: 'Classes & Sections', icon: <BookOpen size={18} /> },
-    // { to: '/ams/admin/reports', label: 'Attendance Reports', icon: <ClipboardList size={18} /> },
+    { to: '/ams/admin/inquiries', label: 'Admission Inquiries', icon: <UsersRound size={18} /> },
+    { to: '/ams/admin/messages', label: 'Contact Messages', icon: <Mail size={18} /> },
     { to: '/ams/admin/analytics', label: 'Analytics', icon: <BarChart2 size={18} /> },
     { to: '/ams/admin/audit', label: 'Audit Log', icon: <History size={18} /> },
 ]
@@ -22,15 +20,17 @@ export default function AdminLayout() {
     const [adminName, setAdminName] = useState('Admin User')
     const [adminEmail, setAdminEmail] = useState('')
     const [avatarUrl, setAvatarUrl] = useState('')
+    const [isSuperAdmin, setIsSuperAdmin] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
         supabase.auth.getUser().then(async ({ data: { user } }) => {
             if (!user) return
             setAdminEmail(user.email ?? '')
-            const { data } = await supabase.from('profiles').select('full_name,avatar_url').eq('id', user.id).single()
+            const { data } = await supabase.from('profiles').select('full_name,avatar_url,is_super_admin').eq('id', user.id).single()
             if (data?.full_name) setAdminName(data.full_name)
             if (data?.avatar_url) setAvatarUrl(data.avatar_url)
+            if (data?.is_super_admin) setIsSuperAdmin(true)
         })
     }, [])
 
@@ -75,6 +75,15 @@ export default function AdminLayout() {
                             {item.icon} {item.label}
                         </NavLink>
                     ))}
+
+                    {isSuperAdmin && (
+                        <>
+                            <div className="sidebar-section-label" style={{ marginTop: 16, color: '#ef4444' }}>Master Controls</div>
+                            <NavLink to="/ams/admin/super" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} style={({ isActive }) => isActive ? { borderLeftColor: '#ef4444' } : {}} onClick={() => setSidebarOpen(false)}>
+                                <ShieldAlert size={18} color="#ef4444" /> <span style={{ color: '#ef4444' }}>Super Admin</span>
+                            </NavLink>
+                        </>
+                    )}
                 </nav>
 
                 <div className="sidebar-footer">

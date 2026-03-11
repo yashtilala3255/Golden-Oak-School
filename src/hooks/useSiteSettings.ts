@@ -19,6 +19,7 @@ export interface SiteSettings {
     youtube: string
     about_years: string
     about_badge: string
+    maintenance_mode: string
 }
 
 const DEFAULTS: SiteSettings = {
@@ -39,6 +40,7 @@ const DEFAULTS: SiteSettings = {
     youtube: 'https://www.youtube.com/@tgos2024',
     about_years: '15+',
     about_badge: 'Years of Excellence',
+    maintenance_mode: 'false',
 }
 
 export function useSiteSettings() {

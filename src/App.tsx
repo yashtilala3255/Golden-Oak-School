@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
 import { usePageView } from './hooks/usePageView'
 import { useSiteSettings } from './hooks/useSiteSettings'
 
@@ -121,6 +122,7 @@ export default function App() {
                     <Route path="profile" element={<StudentProfile />} />
                 </Route>
             </Routes>
+            <VercelAnalytics />
         </BrowserRouter>
     )
 }

@@ -38,6 +38,8 @@ import StudentLayout from './ams/student/StudentLayout'
 import StudentDashboard from './ams/student/StudentDashboard'
 import StudentCalendar from './ams/student/StudentCalendar'
 import StudentProfile from './ams/student/StudentProfile'
+import AdminLogin from "./ams/Login";
+
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
     usePageView()   // 👁 track every page visit
@@ -84,6 +86,7 @@ export default function App() {
 
                 {/* ── AMS Auth ── */}
                 <Route path="/adminlogin" element={<AMSLogin />} />
+                <Route path="/adminlogin" element={<AdminLogin />} />
 
                 {/* ── Admin Panel ── */}
                 <Route path="/ams/admin" element={<ProtectedRoute role="admin"><AdminLayout /></ProtectedRoute>}>

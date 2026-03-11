@@ -93,11 +93,7 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
-          <li>
-            <Link to="/ams/login" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem', justifyContent: 'center' }}>
-              AMS Login
-            </Link>
-          </li>
+          
         </ul>
       </div>
 

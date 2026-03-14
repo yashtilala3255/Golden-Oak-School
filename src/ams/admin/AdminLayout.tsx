@@ -9,6 +9,7 @@ const NAV_ITEMS = [
     { to: '/ams/admin/messages', label: 'Contact Messages', icon: <Mail size={18} /> },
     { to: '/ams/admin/analytics', label: 'Analytics', icon: <BarChart2 size={18} /> },
     { to: '/ams/admin/audit', label: 'Audit Log', icon: <History size={18} /> },
+    { to: '/ams/admin/super', label: 'System Controls', icon: <ShieldAlert size={18} /> },
 ]
 
 const WEB_NAV = [
@@ -65,6 +66,7 @@ export default function AdminLayout() {
                             end={item.end}
                             className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                             onClick={() => setSidebarOpen(false)}
+                            style={item.label === 'System Controls' ? ({ isActive }) => isActive ? {} : { color: 'rgba(255,150,150,0.8)' } : undefined}
                         >
                             {item.icon} {item.label}
                         </NavLink>
@@ -75,15 +77,6 @@ export default function AdminLayout() {
                             {item.icon} {item.label}
                         </NavLink>
                     ))}
-
-                    {isSuperAdmin && (
-                        <>
-                            <div className="sidebar-section-label" style={{ marginTop: 16, color: '#ef4444' }}>Master Controls</div>
-                            <NavLink to="/ams/admin/super" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} style={({ isActive }) => isActive ? { borderLeftColor: '#ef4444' } : {}} onClick={() => setSidebarOpen(false)}>
-                                <ShieldAlert size={18} color="#ef4444" /> <span style={{ color: '#ef4444' }}>Super Admin</span>
-                            </NavLink>
-                        </>
-                    )}
                 </nav>
 
                 <div className="sidebar-footer">

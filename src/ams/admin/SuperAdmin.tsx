@@ -13,28 +13,14 @@ interface Profile {
 
 export default function SuperAdmin() {
     const navigate = useNavigate()
-    const [isSuper, setIsSuper] = useState<boolean | null>(null)
     const [maintenanceMode, setMaintenanceMode] = useState(false)
     const [admins, setAdmins] = useState<Profile[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const checkAccessAndLoad = async () => {
+        const load = async () => {
             const { data: authData } = await supabase.auth.getUser()
             if (!authData.user) return navigate('/adminlogin')
-
-            // Check if super admin
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('is_super_admin')
-                .eq('id', authData.user.id)
-                .single()
-
-            if (!profile?.is_super_admin) {
-                return navigate('/ams/admin')
-            }
-
-            setIsSuper(true)
 
             // Load maintenance mode
             const { data: settings } = await supabase
@@ -42,24 +28,18 @@ export default function SuperAdmin() {
                 .select('value')
                 .eq('key', 'maintenance_mode')
                 .single()
-
-            if (settings) {
-                setMaintenanceMode(settings.value === 'true')
-            }
+            if (settings) setMaintenanceMode(settings.value === 'true')
 
             // Load admins list
             const { data: adminProfiles } = await supabase
                 .from('profiles')
                 .select('id, full_name, role, is_super_admin')
                 .eq('role', 'admin')
-
-            if (adminProfiles) {
-                setAdmins(adminProfiles)
-            }
+            if (adminProfiles) setAdmins(adminProfiles)
 
             setLoading(false)
         }
-        checkAccessAndLoad()
+        load()
     }, [navigate])
 
     const toggleMaintenanceMode = async () => {
@@ -71,7 +51,7 @@ export default function SuperAdmin() {
             .eq('key', 'maintenance_mode')
     }
 
-    if (loading || !isSuper) {
+    if (loading) {
         return <div className="spinner" style={{ margin: '40px auto' }} />
     }
 

@@ -52,12 +52,67 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 
     if (settings.maintenance_mode === 'true') {
         return (
-            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--gray-50)', textAlign: 'center', padding: 24 }}>
-                <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'var(--gold-pale)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
-                    <span style={{ fontSize: 40 }}>🛠️</span>
+            <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, var(--green-deep) 0%, #0d2b1e 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '24px 16px' }}>
+                {/* Logo + icon */}
+                <div style={{ width: 90, height: 90, borderRadius: '50%', background: 'linear-gradient(135deg, var(--gold), var(--gold-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28, boxShadow: '0 8px 32px rgba(201,168,76,0.4)' }}>
+                    <span style={{ fontSize: 44 }}>🛠️</span>
                 </div>
-                <h1 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-serif)', color: 'var(--green-deep)', marginBottom: 16, fontWeight: 800 }}>We'll be back soon!</h1>
-                <p style={{ fontSize: '1.125rem', color: 'var(--gray-500)', maxWidth: 500, lineHeight: 1.6 }}>Sorry for the inconvenience but we're performing some maintenance at the moment. We'll be back online shortly!</p>
+
+                {/* Heading */}
+                <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', fontFamily: 'var(--font-serif)', color: 'var(--gold-light)', marginBottom: 12, fontWeight: 800, letterSpacing: '-0.01em' }}>
+                    We'll Be Back Soon!
+                </h1>
+                <p style={{ fontSize: '1.0625rem', color: 'rgba(255,255,255,0.65)', maxWidth: 480, lineHeight: 1.7, marginBottom: 40 }}>
+                    Sorry for the inconvenience — we're performing scheduled maintenance. <br />We'll be back online shortly!
+                </p>
+
+                {/* Contact Info Card */}
+                <div style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(201,168,76,0.25)', borderRadius: 16, padding: '28px 32px', maxWidth: 420, width: '100%', marginBottom: 32, backdropFilter: 'blur(10px)' }}>
+                    <p style={{ color: 'var(--gold-light)', fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20 }}>Contact the School</p>
+
+                    {/* Email */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                        <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(201,168,76,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <span style={{ fontSize: 16 }}>✉️</span>
+                        </div>
+                        <a href="mailto:school.goldenoak@gmail.com" style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9375rem', textDecoration: 'none', fontWeight: 500 }}>
+                            school.goldenoak@gmail.com
+                        </a>
+                    </div>
+
+                    {/* Phone */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                        <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(201,168,76,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <span style={{ fontSize: 16 }}>📞</span>
+                        </div>
+                        <a href="tel:07777053054" style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9375rem', textDecoration: 'none', fontWeight: 500 }}>
+                            07777053054
+                        </a>
+                    </div>
+
+                    {/* Address */}
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                        <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(201,168,76,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
+                            <span style={{ fontSize: 16 }}>📍</span>
+                        </div>
+                        <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.875rem', lineHeight: 1.6, textAlign: 'left' }}>
+                            Arjun Park, behind Swati Park,<br />Kotharia, Gujarat 360002
+                        </span>
+                    </div>
+                </div>
+
+                {/* Developer Credit */}
+                <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8125rem', marginTop: 8 }}>
+                    Designed &amp; developed by{' '}
+                    <a
+                        href="https://scalexwebsolution.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'var(--gold)', fontWeight: 600, textDecoration: 'none', borderBottom: '1px solid rgba(201,168,76,0.4)', paddingBottom: 1 }}
+                    >
+                        ScaleX Web Solution
+                    </a>
+                </p>
             </div>
         )
     }

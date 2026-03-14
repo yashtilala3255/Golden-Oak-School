@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { GraduationCap, LayoutDashboard, Calendar, LogOut, Bell, BookOpen, User } from 'lucide-react'
+import { GraduationCap, LayoutDashboard, Calendar, LogOut, Bell, BookOpen, User, Menu, X } from 'lucide-react'
 import { supabase } from '../../supabaseClient'
 import { getLinkedStudent } from './useStudentData'
 
@@ -9,6 +9,7 @@ interface StudentInfo { full_name: string; grade: string; section: string; roll_
 export default function StudentLayout() {
     const navigate = useNavigate()
     const [student, setStudent] = useState<StudentInfo | null>(null)
+    const [sidebarOpen, setSidebarOpen] = useState(false)
 
     useEffect(() => {
         const loadStudent = async () => {
@@ -37,18 +38,18 @@ export default function StudentLayout() {
 
                 <nav className="sidebar-nav">
                     <div className="sidebar-section-label">My Attendance</div>
-                    <NavLink to="/ams/student" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/ams/student" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                         <LayoutDashboard size={18} /> Dashboard
                     </NavLink>
-                    <NavLink to="/ams/student/calendar" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/ams/student/calendar" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                         <Calendar size={18} /> Attendance Calendar
                     </NavLink>
-                    <NavLink to="/ams/student/profile" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/ams/student/profile" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                         <User size={18} /> My Profile
                     </NavLink>
 
                     <div className="sidebar-section-label" style={{ marginTop: 12 }}>School</div>
-                    <NavLink to="/" className="nav-item" target="_blank">
+                    <NavLink to="/" className="nav-item" target="_blank" onClick={() => setSidebarOpen(false)}>
                         <BookOpen size={18} /> School Website
                     </NavLink>
                 </nav>
@@ -73,10 +74,15 @@ export default function StudentLayout() {
 
             <main className="ams-main">
                 <header className="ams-topbar">
-                    <div>
-                        <div style={{ fontWeight: 700, color: 'var(--green-deep)', fontSize: '1.0625rem' }}>Student Portal</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--gray-400)' }}>
-                            {student ? `${student.full_name} • ${student.grade} Section ${student.section}` : 'Golden Oak School'}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" aria-label="Toggle Menu">
+                            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
+                        <div>
+                            <div style={{ fontWeight: 700, color: 'var(--green-deep)', fontSize: '1.0625rem' }}>Student Portal</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--gray-400)' }}>
+                                {student ? `${student.full_name} • ${student.grade} Section ${student.section}` : 'Golden Oak School'}
+                            </div>
                         </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

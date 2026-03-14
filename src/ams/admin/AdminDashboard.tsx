@@ -119,8 +119,8 @@ export default function AdminDashboard() {
                 </div>
             ) : (
                 <>
-                    {/* Stat Cards */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18, marginBottom: 28 }}>
+                    {/* Stat Cards — 4 col → 2 col → 1 col */}
+                    <div className="admin-4col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18, marginBottom: 28 }}>
                         {STAT_CARDS.map((s, i) => (
                             <div key={i} className="stat-card" style={{ animationDelay: `${i * 0.07}s`, borderTop: `3px solid ${s.color}`, cursor: s.link ? 'pointer' : 'default' }}
                                 onClick={() => s.link && (window.location.href = s.link)}>
@@ -134,8 +134,8 @@ export default function AdminDashboard() {
                         ))}
                     </div>
 
-                    {/* Chart + Quick Links */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 24, marginBottom: 24 }}>
+                    {/* Chart + Quick Links — 2 col → 1 col */}
+                    <div className="admin-2col-chart" style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 24, marginBottom: 24 }}>
                         {/* 7-day page views area chart */}
                         <div style={{ background: 'var(--white)', borderRadius: 'var(--radius-lg)', padding: 24, boxShadow: 'var(--shadow)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
@@ -189,8 +189,8 @@ export default function AdminDashboard() {
                         </div>
                     </div>
 
-                    {/* Recent Announcements + Contact Messages */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                    {/* Recent Announcements + Contact Messages — 2 col → 1 col */}
+                    <div className="admin-2col-chart" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                         {/* Recent Announcements */}
                         <div style={{ background: 'var(--white)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
                             <div style={{ padding: '18px 24px', borderBottom: '1px solid var(--gray-100)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

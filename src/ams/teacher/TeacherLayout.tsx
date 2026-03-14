@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { GraduationCap, ClipboardCheck, History, LogOut, Bell, Users } from 'lucide-react'
+import { GraduationCap, ClipboardCheck, History, LogOut, Bell, Users, Menu, X } from 'lucide-react'
 import { supabase } from '../../supabaseClient'
 
 interface TeacherInfo { full_name: string; subject: string; grade: string; section: string }
@@ -8,6 +8,7 @@ interface TeacherInfo { full_name: string; subject: string; grade: string; secti
 export default function TeacherLayout() {
     const navigate = useNavigate()
     const [teacher, setTeacher] = useState<TeacherInfo | null>(null)
+    const [sidebarOpen, setSidebarOpen] = useState(false)
 
     useEffect(() => {
         const load = async () => {
@@ -28,7 +29,8 @@ export default function TeacherLayout() {
 
     return (
         <div className="ams-layout">
-            <aside className="sidebar">
+            <div className={`sidebar-overlay ${sidebarOpen ? 'visible' : ''}`} onClick={() => setSidebarOpen(false)} />
+            <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-logo">
                     <div style={{ width: 36, height: 36, background: 'linear-gradient(135deg, var(--gold), var(--gold-dark))', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <GraduationCap size={20} color="var(--green-deep)" />
@@ -40,13 +42,13 @@ export default function TeacherLayout() {
                 </div>
                 <nav className="sidebar-nav">
                     <div className="sidebar-section-label">Navigation</div>
-                    <NavLink to="/ams/teacher" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/ams/teacher" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                         <ClipboardCheck size={18} /> Mark Attendance
                     </NavLink>
-                    <NavLink to="/ams/teacher/history" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/ams/teacher/history" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                         <History size={18} /> Attendance History
                     </NavLink>
-                    <NavLink to="/ams/teacher/students" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/ams/teacher/students" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                         <Users size={18} /> Students
                     </NavLink>
                 </nav>
@@ -69,10 +71,15 @@ export default function TeacherLayout() {
             </aside>
             <main className="ams-main">
                 <header className="ams-topbar">
-                    <div>
-                        <div style={{ fontWeight: 700, color: 'var(--green-deep)', fontSize: '1.0625rem' }}>Teacher Portal</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--gray-400)' }}>
-                            {teacher ? `${teacher.full_name} • ${teacher.subject} – ${teacher.grade} ${teacher.section}` : 'Golden Oak School'}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" aria-label="Toggle Menu">
+                            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
+                        <div>
+                            <div style={{ fontWeight: 700, color: 'var(--green-deep)', fontSize: '1.0625rem' }}>Teacher Portal</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--gray-400)' }}>
+                                {teacher ? `${teacher.full_name} • ${teacher.subject} – ${teacher.grade} ${teacher.section}` : 'Golden Oak School'}
+                            </div>
                         </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

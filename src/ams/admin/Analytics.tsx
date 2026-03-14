@@ -186,8 +186,8 @@ export default function Analytics() {
                 </div>
             ) : (
                 <>
-                    {/* Stat Cards */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 28 }}>
+                    {/* Stat Cards — 3 col → 2 col → 1 col */}
+                    <div className="admin-4col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 28 }}>
                         {STATS.map((s, i) => (
                             <div key={i} style={{ background: 'var(--white)', borderRadius: 'var(--radius-lg)', padding: '18px 20px', boxShadow: 'var(--shadow)', borderTop: `3px solid ${s.color}`, display: 'flex', gap: 14, alignItems: 'center' }}>
                                 <div style={{ width: 48, height: 48, borderRadius: 'var(--radius)', background: s.pale, color: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{s.icon}</div>
@@ -224,8 +224,8 @@ export default function Analytics() {
                         </ResponsiveContainer>
                     </div>
 
-                    {/* Top Pages + Device Split */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 24, marginBottom: 24 }}>
+                    {/* Top Pages + Device Split — 2 col → 1 col */}
+                    <div className="admin-2col-chart" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 24, marginBottom: 24 }}>
                         {/* Top Pages */}
                         <div style={{ background: 'var(--white)', borderRadius: 'var(--radius-lg)', padding: 24, boxShadow: 'var(--shadow)' }}>
                             <div style={{ fontWeight: 700, color: 'var(--green-deep)', marginBottom: 2 }}>Top Pages</div>

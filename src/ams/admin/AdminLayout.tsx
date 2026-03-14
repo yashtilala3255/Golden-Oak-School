@@ -43,8 +43,8 @@ export default function AdminLayout() {
 
     return (
         <div className="ams-layout">
-            {/* Sidebar */}
-            {sidebarOpen && <div className="mobile-overlay" style={{ zIndex: 195 }} onClick={() => setSidebarOpen(false)} />}
+            {/* Mobile sidebar overlay */}
+            <div className={`sidebar-overlay ${sidebarOpen ? 'visible' : ''}`} onClick={() => setSidebarOpen(false)} />
             <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-logo">
                     <div style={{ width: 36, height: 36, background: 'linear-gradient(135deg, var(--gold), var(--gold-dark))', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -110,7 +110,7 @@ export default function AdminLayout() {
             <main className="ams-main">
                 <header className="ams-topbar">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <button onClick={() => setSidebarOpen(o => !o)} style={{ display: 'none' }} className="mobile-menu-btn" aria-label="Menu">
+                        <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" aria-label="Toggle Menu">
                             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
                         <div>
@@ -133,12 +133,6 @@ export default function AdminLayout() {
                 </div>
             </main>
 
-            <style>{`
-        .mobile-menu-btn { background: none; border: none; cursor: pointer; color: var(--gray-600); }
-        @media (max-width: 768px) {
-          .mobile-menu-btn { display: flex !important; align-items: center; justify-content: center; }
-        }
-      `}</style>
         </div>
     )
 }
